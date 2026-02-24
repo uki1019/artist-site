@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>GOODS SHOP</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="goods-page">
+
+  <!-- 头部 -->
+  <header class="goods-site-header">
+    <!-- 上段：品牌 + 图标 -->
+    <div class="goods-wrap">
+      <div class="goods-head-top">
+        <div class="goods-brand">
+          GOODS SHOP
+          <small>OFFICIAL STORE</small>
+        </div>
+  
+        <div class="goods-head-right">
+          <!-- Font Awesome 图标 -->
+          <button class="goods-icon-btn" aria-label="Account">
+            <i class="fa-solid fa-user"></i>
+          </button>
+          <button class="goods-icon-btn" aria-label="Cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button>
+          <button class="goods-icon-btn" id="btnSearch" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+  
+    <!-- 下段：Collection 条（注意是 header 的下一个块，不在 .goods-head-top 里面） -->
+    <div class="goods-hero-bar">
+      <div class="goods-wrap">
+        <div class="goods-collection-title">COLLECTION</div>
+        <div class="goods-collection-pills">
+          <a href="#" class="goods-pill">ALL ITEMS</a>
+          <a href="#" class="goods-pill">NEW</a>
+          <a href="#" class="goods-pill">XGALX</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- 可点击按钮 -->
+<button class="orbit-btn">
+    <!-- 三个圈 -->
+    <svg class="rings" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="30" ry="12"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,-6)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,6)"/>
+    </svg>
+  </button>
+  
+  <!-- 椭圆菜单 Overlay -->
+  <div class="oval-menu" id="ovalMenu" aria-hidden="true">
+    <!-- 背景毛玻璃层 + 半透明底色 -->
+    <div class="oval-bg"></div>
+  
+    <!-- 白色描边（用SVG更顺滑） -->
+    <svg class="oval-stroke" viewBox="0 0 1000 560" aria-hidden="true">
+      <ellipse cx="500" cy="280" rx="480" ry="250" fill="none"/>
+    </svg>
+  
+    <!-- 底部大logo装饰（可选） -->
+    <img class="oval-deco" src="images/logo.svg" alt="" />
+  
+    <!-- 菜单内容 -->
+    <nav class="oval-content">
+      <ul>
+        <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+        <li><a href="news.html">NEWS</a></li>
+        <li><a href="artist.html">ARTIST</a></li>
+        <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+        <li><a href="special.html">SPECIAL</a></li>
+        <li><a href="goods.html">GOODS</a></li>
+      </ul>
+    </nav>
+  </div>
+
+
+  <!-- 主体 -->
+  <main class="goods-wrap">
+    <h2 class="goods-sec-title">NEW ITEMS</h2>
+
+    <section class="goods-grid">
+
+      <!-- 商品卡片 1 -->
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods1.webp" alt="item1">
+          <span class="goods-badge">NEW</span>
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】Incense Stick VELVET IGNITE Produced by JURIN</a>
+          <div class="goods-price">¥5,000 <small>税込</small></div>
+        </div>
+      </article>
+
+      <!-- 商品卡片 2 -->
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods2.webp" alt="item2">
+          <span class="goods-badge sold">SOLD OUT</span>
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】Incense Stick Jadecalm Produced by HINATA</a>
+          <div class="goods-price">¥5,000 <small>税込</small></div>
+        </div>
+      </article>
+
+      <!-- 商品卡片 3 -->
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods3.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】Incense Cone Jadecalm Produced by HINATA</a>
+          <div class="goods-price">¥5,000 <small>税込</small></div>
+        </div>
+      </article>
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods4.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】VELVET IGNITE Eau de Parfum</a>
+          <div class="goods-price">¥32,800 <small>税込</small></div>
+        </div>
+      </article>     
+       <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods5.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】Incense Stick VELVET IGNITE Produced by JURIN</a>
+          <div class="goods-price">¥5,000 <small>税込</small></div>
+        </div>
+      </article>     
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods6.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">【Build-To-Order】Incense Cone VELVET IGNITE Produced by JURIN</a>
+          <div class="goods-price">¥5,000 <small>税込</small></div>
+        </div>
+      </article>      
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods7.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">エル・ジャポン2025年7月号</a>
+          <div class="goods-price">¥880 <small>税込</small></div>
+        </div>
+      </article>      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods8.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">Post Card -IS THIS LOVE- / JURIN</a>
+          <div class="goods-price">¥400 <small>税込</small></div>
+        </div>
+      </article>      
+      <article class="goods-card">
+        <div class="goods-thumb">
+          <img src="./images/goods9.webp" alt="item3">
+        </div>
+        <div class="goods-card-body">
+          <div class="goods-producer">XG OFFICIAL</div>
+          <a href="#" class="goods-title">Post Card -IS THIS LOVE- / CHISA</a>
+          <div class="goods-price">¥400 <small>税込</small></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="goods-site-footer">
+    <div class="goods-wrap goods-foot-inner">
+      <div>© 2025 GOODS SHOP</div>
+      <nav class="footer-nav" aria-label="Footer">
+        <ul class="footer-grid">
+            <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+            <li><a href="news.html">NEWS</a></li>
+            <li><a href="artist.html">ARTIST</a></li>
+            <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+            <li><a href="special.html">SPECIAL</a></li>
+            <li><a href="goods.html">GOODS</a></li>
+          </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- 搜索抽屉 -->
+  <div class="goods-search-drawer" id="searchDrawer">
+    <div class="goods-search-inner">
+      <input type="search" placeholder="Search items…">
+      <button class="goods-btn" id="btnCloseSearch">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // 打开关闭搜索（增加空值判断避免报错）
+    const btnSearch = document.getElementById('btnSearch');
+    const drawer = document.getElementById('searchDrawer');
+    const btnClose = document.getElementById('btnCloseSearch');
+
+    if (btnSearch && drawer && btnClose) {
+      btnSearch.addEventListener('click', () => drawer.classList.add('open'));
+      btnClose.addEventListener('click', () => drawer.classList.remove('open'));
+    }
+  </script>
+  <script src="./js/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Bodoni+Moda:opsz,wght@6..96,400..900&display=swap" rel="stylesheet">
+
+    <head>
+        <meta charset="utf-8">
+        <title>discography</title>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+</head>
+<body>
+  <button class="orbit-btn">
+    <!-- 三个圈 -->
+    <svg class="rings" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="30" ry="12"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,-6)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,6)"/>
+    </svg>
+  </button>
+  
+  <!-- 椭圆菜单 Overlay -->
+  <div class="oval-menu" id="ovalMenu" aria-hidden="true">
+    <!-- 背景毛玻璃层 + 半透明底色 -->
+    <div class="oval-bg"></div>
+  
+    <!-- 白色描边（用SVG更顺滑） -->
+    <svg class="oval-stroke" viewBox="0 0 1000 560" aria-hidden="true">
+      <ellipse cx="500" cy="280" rx="480" ry="250" fill="none"/>
+    </svg>
+  
+    <!-- 底部大logo装饰（可选） -->
+    <img class="oval-deco" src="images/logo.svg" alt="" />
+  
+    <!-- 菜单内容 -->
+    <nav class="oval-content">
+      <ul>
+        <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+        <li><a href="news.html">NEWS</a></li>
+        <li><a href="artist.html">ARTIST</a></li>
+        <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+        <li><a href="special.html">SPECIAL</a></li>
+        <li><a href="goods.html">GOODS</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+      <figure><img class="cover" src="images/2.jpg" alt="パール アートワーク"></figure>
+      <section>
+        <h1>IN THE RAIN</h1>
+        <div class="meta">2025.04.11
+        </div>
+        <div class="video">
+          <!-- 替换成真实视频ID即可 -->
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/N0QPFkaTbfw?si=xLV3W2yIXYpl67zk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <div class="cat">Tracklist:
+        </div>
+        <ol class="tracklist">
+          <li><span class="no">1</span> <a href="#" class="title">IN THE RAIN</a></li>
+          <li><span class="no">2</span> <a href="#" class="title">IN THE RAIN x XDM</a></li>
+          <li><span class="no">3</span> <a href="#" class="title">IN THE RAIN (Instrumental)</a></li>
+        </ol>
+      </section>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <!-- 左：品牌块 -->
+      <div class="footer-brand">
+        <div class="brand-sub">XG</div>
+        <p><a class="ico" href="#" aria-label="X" title="X">
+          <iconify-icon icon="simple-icons:x"></iconify-icon>
+        </a></p>
+      </div>
+  
+       <!-- 右：三列导航 -->
+       <nav class="footer-nav" aria-label="Footer">
+        <ul class="footer-grid">
+            <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+            <li><a href="news.html">NEWS</a></li>
+            <li><a href="artist.html">ARTIST</a></li>
+            <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+            <li><a href="special.html">SPECIAL</a></li>
+            <li><a href="goods.html">GOODS</a></li>
+          </ul>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/script.js" defer></script>
+</body>
+</html>

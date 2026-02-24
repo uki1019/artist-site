@@ -1,0 +1,1595 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*****共通部分
+***********************************************/
+/* 基础样式 */
+body {
+  margin: 0;
+  background: #000;
+  height: 100vh;
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", sans-serif;
+}
+
+/* 初始：可见但很模糊 + 色彩更冲 */
+.main-visual {
+  position: relative;
+  width: 100%;
+  height: 100vh;  /* 强制全屏高 */
+  overflow: hidden;
+}
+
+.bg {
+  position: fixed; /* 固定全屏 */
+  inset: 0;        /* 相当于 top:0; right:0; bottom:0; left:0; */
+  overflow: hidden;
+}
+
+/* 背景图：低饱和 + 模糊，之后用 JS/CSS 过渡 */
+.bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px) saturate(0.6); /* 初始低饱和+模糊 */
+  transform: scale(1.05);
+  transition: filter 3.5s ease, transform 3.5s ease;
+}
+
+/* 清晰状态类 */
+.bg-img.loaded {
+  filter: blur(0) saturate(1.2);
+  transform: scale(1);
+}
+
+/* 父容器：控制位置和缩放 */
+.logo-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.56); /* 初始稍大 */
+  transition: transform 3.5s ease;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+  will-change: transform;
+}
+.logo-wrap.loaded {
+  transform: translate(-50%, -50%) scale(1.46); /* 缩回 */
+}
+
+/* logo 图片 */
+.logo {
+  width: clamp(160px, 24vw, 420px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.logo-text {
+  color: #fff;
+  font-size: clamp(14px, 2vw, 20px);
+  font-family: 'Montserrat', 'Helvetica Neue', sans-serif; /* 现代无衬线 */
+  opacity: 1;
+  margin-top: -3.5em; /* 缩小距离，默认是 1em */
+  transform: translateY(0); /* 去掉多余的偏移 */
+  transition: transform 3.5s ease;
+}
+
+/* 跟随父容器缩放时同时调整位置 */
+.logo-wrap.loaded .logo-text {
+  transform: translateY(-1px);
+}
+
+/* icon */
+/* 仅在 artist 页面，把 rings 填充改成黑色 */
+.artist-page .rings ellipse {
+  stroke: black;   /* 黑色描边 */
+  fill: none;      /* 保持空心，不要填充 */
+  stroke-width: 2; /* 可调粗细 */
+}
+
+.orbit-btn {
+  position: fixed;
+  top: 0px;
+  right: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.orbit-btn svg {
+  width: 120px;
+  height: 120px;
+  stroke: white;
+  stroke-width: 2;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+/* 默认：三个圈可见 */
+.orbit-btn svg ellipse {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* hover 时：隐藏两个，只留中间 */
+.orbit-btn:hover svg ellipse:nth-child(2),
+.orbit-btn:hover svg ellipse:nth-child(3) {
+  opacity: 0;
+}
+/* 椭圆菜单容器：默认隐藏 */
+.oval-menu{
+  position:fixed; inset:0; display:grid; place-items:center;
+  visibility:hidden; opacity:0; transition:opacity .45s ease, visibility 0s .45s;
+  z-index:20000;
+}
+/* 打开状态 */
+.oval-menu.is-open{visibility:visible; opacity:1; transition:opacity .45s ease}
+
+/* 椭圆形状：用 clip-path 把内容裁成椭圆 */
+.oval-bg, .oval-content, .oval-stroke, .oval-deco{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(92vw, 1100px); aspect-ratio: 1000 / 560; /* 和 SVG viewBox 比例一致 */
+  clip-path: ellipse(48% 45% at 50% 50%);
+}
+
+/* 半透明底 + 背景毛玻璃（注意：底色必须带透明度）*/
+.oval-bg{
+  background: rgba(26, 26, 26, 0.78);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
+  border-radius:999px; /* 兜底，防止不支持 clip-path 的锯齿 */
+}
+
+/* 白色描边 */
+.oval-stroke{
+  pointer-events:none;
+  stroke:#fff; stroke-width:3; fill:none; opacity:.9;
+}
+
+/* 菜单内容布局 */
+.oval-content{ display:flex; align-items:center; justify-content:center; }
+.oval-content ul{
+  margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    gap: 22px 48px;
+    text-align: center;
+    color: #eaeaea;
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: .08em;
+    font-size: clamp(14px, 1.6vw, 22px);
+}
+
+/* 底部超大logo装饰（可选） */
+.oval-deco{
+  inset:auto; left:50%; bottom:0; top:auto; transform:translateX(-50%);
+  width:120%; opacity:1; filter:drop-shadow(0 0 0 rgba(0,0,0,0));
+  clip-path: ellipse(48% 45% at 50% 50%);  /* 仍限制在椭圆内 */
+  pointer-events:none;
+}
+
+/* 入场动画：轻微缩放/浮现 */
+.oval-menu.is-open .oval-bg,
+.oval-menu.is-open .oval-stroke,
+.oval-menu.is-open .oval-content,
+.oval-menu.is-open .oval-deco{
+  animation: ovalPop .45s cubic-bezier(.2,.7,0,1);
+}
+@keyframes ovalPop{ from{ transform:translate(-50%,-50%) scale(.96); opacity:.6 } to{ transform:translate(-50%,-50%) scale(1); opacity:1 } }
+
+/* 可选：点遮罩外关闭 */
+.oval-menu::before{
+  content:""; position:absolute; inset:0; backdrop-filter:none;
+}
+/* 菜单字体样式 */
+.oval-content li {
+  font-family: "Futura", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  list-style: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.oval-content li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, #ff80ce, #7dcbff);
+  transition: width 0.4s ease, left 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.oval-content li:hover {
+  color: transparent;
+  background: linear-gradient(90deg, #ff7acc, #7dcbff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transform: scale(1.06);
+}
+
+.oval-content li:hover::after {
+  width: 100%;
+  left: 50%;
+}
+
+
+/*****biography*****/
+/* hero.css */
+:root{
+  --hero-h: 100vh;                          /* 英雄区高度 */
+  --logo-w: clamp(240px, 60vw, 980px);      /* logo 宽度（响应式） */
+  --logo-bottom: -8vw;                      /* 往下探出多少（负值=更往下） */
+  --focus: center;       
+  --logo-overlap: 10vw;                     /* 背景取景点：如 'center 30%' */
+}
+
+.hero{
+  position: relative;
+  height: var(--hero-h);
+  overflow: visible;   
+  padding-bottom: var(--logo-overlap);
+  --logo-w: clamp(300px, 56vw, 900px); /* 例：比原来小一点 */
+  /* 可选：独立堆叠上下文，避免外层 transform 等影响层级 */
+  isolate: isolate;
+}
+
+/* 背景图铺满容器 */
+.hero__bg{
+  position: absolute; inset: 0;
+  width: 100%; height: 95%;
+  object-fit: cover;
+  object-position: var(--focus);
+  z-index: 0;
+  display: block;
+}
+
+/* logo 盖在上层，并从底部“探”出来一些 */
+.hero__logo{
+  position: absolute;
+  left: 22%;
+  bottom: calc(-1 * var(--logo-overlap) - 90px);  /* 探出的量 */
+  transform: translateX(-90%);
+  width: 45vw;
+  z-index: 2222;                     /* 确保在上 */
+  pointer-events: none;           /* 不挡住下面交互（可删） */
+}
+
+
+/* 文字区块 */
+.message{
+  /* 如果 hero 里 logo 从底部探出是负值，比如 -8vw，这里用下面这句自动顶出间距 */
+  padding: clamp(56px, 10vw, 120px) 6vw;
+  color: #e9ecf2;
+  margin-top: -4vw;
+}
+
+.msg-wrap{
+  max-width: min(1200px, 90vw);
+  margin: 0 auto;
+}
+
+.msg-eyebrow{
+  font-size: 14px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin: 0 0 1.5rem;
+}
+.message2{
+  /* 如果 hero 里 logo 从底部探出是负值，比如 -8vw，这里用下面这句自动顶出间距 */
+  padding: clamp(56px, 10vw, 120px) 6vw;
+  color: #e9ecf2;
+  margin-top: 13vw;
+}
+
+/* 两列布局：左大标题 / 右正文 */
+.msg-grid{
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(24px, 6vw, 80px);
+  align-items: start;
+}
+
+.msg-lead{
+  font-size: clamp(28px, 6vw, 64px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: .02em;
+  margin: 0;
+}
+
+.msg-body p{
+  margin: 0 0 1.1em;
+  font-size: clamp(14px, 1.2vw, 18px);
+  line-height: 1.9;
+  opacity: .92;
+}
+
+
+/* 首帧不要过渡，避免“飘进来” */
+.hero__logo{
+  /* 保持你原来的定位 */
+  transform: translateX(-50%)
+             translateY(var(--ty, 0px))
+             scale(var(--s, 1))
+             rotateX(var(--rx, 0deg))
+             rotateY(var(--ry, 0deg));
+  transition: none;              /* 关键：首帧禁用过渡 */
+  will-change: transform;
+}
+
+/* 首帧之后再打开轻微过渡（更顺滑，但不横移） */
+body.motion-ready .hero__logo{
+  transition: transform .08s linear;
+}
+
+.media-bar{
+  background:#191919;
+  color:#e9ecf2;
+  padding: 18px 6vw;
+}
+.media-inner{
+  display:flex; align-items:center; gap: clamp(16px, 4vw, 40px);
+  flex-wrap: wrap;
+}
+.media-tag{
+  font-weight: 700; font-size: 18px;
+}
+.pipe{ width:1px; height:24px; background:#3a3a3a; }
+
+.icons{ list-style:none; margin:0; padding:0; display:flex; gap:22px; }
+
+.ico{
+  --size: 36px;          /* 圈的外径 */
+  width: var(--size); height: var(--size);
+  border-radius: 999px;
+  display:grid; place-items:center;
+  color:#e9ecf2; text-decoration:none;
+  background: transparent;
+  transition: transform .15s ease, background-color .15s ease, color .15s ease;
+}
+.ico svg{ width: 20px; height: 20px; fill: currentColor; }
+
+.ico:hover,
+.ico:focus-visible{
+  background: rgba(255,255,255,.08);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+
+
+/* 内容整体水平居中、两组在一行 */
+.social-inner{
+  max-width: 1200px;
+  margin: 0 auto;              /* 容器仍居中 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;   /* ← 内容靠右 */
+  gap: clamp(16px, 5vw, 48px);
+  flex-wrap: wrap;
+}
+
+
+/* 每一组：标签 + 图标列表 */
+.social-group{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.social-label{
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: .02em;
+  opacity: .95;
+  color: #e9ecf2;
+}
+
+/* 竖线分隔符 */
+.social-divider{
+  width: 1px;
+  height: 22px;
+  background: #3a3a3a;
+  display: inline-block;
+}
+
+/* 图标列表 */
+.social-icons{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;                           /* 图标间距 */
+}
+
+/* 圆形可点区域 */
+.ico{
+  --size: 34px;                        /* 圈直径 */
+  width: var(--size); height: var(--size);
+  display: grid; place-items: center;
+  border-radius: 999px;
+  color: #e9ecf2; text-decoration: none;
+  background: transparent;
+  transition: transform .15s ease, background-color .15s ease, color .15s ease;
+}
+.ico svg{ width: 20px; height: 20px; fill: currentColor; }
+
+.ico:hover,
+.ico:focus-visible{
+  background: rgba(255,255,255,.08);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+
+/* 大小 & 上移都靠变量，改起来方便 */
+/* 覆盖在上面的 PNG */
+.biglogo{
+  position: absolute;
+  inset: 0;                      /* 顶满容器，然后用 contain 适配 */
+  z-index: 2;
+  pointer-events: none;
+  width: 100%;
+  height: 180%;
+  object-fit: contain;           /* ← 关键：完整显示，不裁切 */
+  transform:  translateY(75vw);   
+  transform-origin: center;
+  max-width: none;
+}
+
+
+/* 容器：隐藏溢出 + 两侧渐隐 */
+.bigtype-marquee{
+  --fg: #2e7a77;                 /* 字色 */
+  --size: 400px;/* 字号 */
+  --gap: 8vw;                    /* 词与词间距 */
+  position: relative;
+  overflow: hidden;
+  padding: 6vh 0;
+  color: var(--fg);
+  transform: translateY(-8vw);         /* ← 往上移，想更上就改更负，例如 -8vw */
+  /* 渐隐遮罩（Safari 需要 -webkit- 前缀） */
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 6%, #000 94%, rgba(0,0,0,0));
+}
+
+/* 轨道：两份相同内容首尾拼接，动画只移动自身的 50% 就能无缝 */
+.bigtype-track{
+  display: inline-flex;
+  gap: var(--gap);
+  white-space: nowrap;
+  will-change: transform;
+  animation: bigtype-scroll var(--dur, 40s) linear infinite;
+}
+
+@keyframes bigtype-scroll{
+  from{ transform: translateX(0); }
+  to  { transform: translateX(-50%); } /* 只走自身的一半宽度 */
+}
+
+/* 瘦长时尚风 */
+.bt{
+  font-family: 'Italiana', 'Bodoni Moda', ui-serif, Georgia, serif;
+  font-weight: 400;                 /* Italiana只有一个字重，已很细 */
+  font-size: var(--size);
+  line-height: .9;
+  letter-spacing: .02em;            /* 轻微字距，显高级 */
+  /* 可选：让字更“窄”一点（浏览器支持就用 font-stretch，否则退回 scaleX） */
+  font-stretch: 90%;
+  transform: scaleX(.95);           /* 再稍微收一点宽，想更瘦改到 .9 */
+  transform-origin: center;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 若使用 Bodoni Moda，可加视觉字号轴（更锐利） */
+@supports (font-variation-settings: normal){
+  .bt{ font-variation-settings: 'opsz' 96; }  /* 96≈超大字号的优化 */
+}
+
+/* 减少动态偏好：静止 */
+@media (prefers-reduced-motion: reduce){
+  .bigtype-track{ animation: none; }
+}
+/* ===== 容器 + 颗粒噪点背景 ===== */
+.site-footer{
+  position: relative;
+  color: #e9ecf2;
+  padding: clamp(60px, 12vh, 160px) 6vw;
+  overflow: hidden;
+}
+
+
+
+/* ===== 布局 ===== */
+.footer-inner{
+  max-width: 1900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(220px, 340px) 1fr; /* 左品牌 / 右导航 */
+  gap: clamp(40px, 8vw, 200px);
+  transform: translateY(5vw);
+  align-items: start;
+}
+
+/* 左侧品牌 */
+.footer-brand{ color:#fff; }
+.brand-mark{
+  width: min(280px, 24vw);
+  height: auto;
+  display:block;
+  margin-bottom: 14px;
+}
+.brand-sub{
+  font-size: 14px;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  opacity: .9;
+}
+.brand-x{
+  width: 28px; height: 28px;
+  margin-top: 18px;
+  opacity: .9;
+}
+
+/* 右侧三列导航 */
+.footer-grid{
+  list-style:none; margin:0; padding:0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: clamp(28px, 7vw, 120px);
+  row-gap: clamp(18px, 4vh, 36px);
+}
+
+.footer-grid a{
+  display:inline-block;
+  color:#e9ecf2; text-decoration:none;
+  font-size: clamp(14px, 1.1vw, 18px);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity:.92;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.footer-grid a:hover{ opacity:1; transform: translateY(-2px); }
+
+.big2logo2{
+  display:block;
+  margin:0 auto;
+  width:1400px;   /* 自己调大小 */
+  height:auto;
+  transform: translateY(-200px); /* ↑ 想再上移就加大负值 */
+  clip-path: inset(0 0 40% 0);  /* 只保留上半部分：裁掉底部50% */
+  /* 可选 */
+  pointer-events:none;
+}
+.lastlogo{
+  display:block;
+  margin:0 auto;
+  width:1500px;   /* 自己调大小 */
+  height:auto;
+  transform: translateY(-150px); /* ↑ 想再上移就加大负值 */
+  /* 可选 */
+  pointer-events:none;
+}
+.BIOGRAPHYvideo2 {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中（如果你希望整个section里垂直居中） */
+  padding: 40px 0;         /* 上下留白 */
+}
+
+.BIOGRAPHYvideo iframe {
+  width: 80vw;   /* 宽度占屏幕的 80% */
+  height: 45vw;  /* 按 16:9 比例自动计算高度 (80 ÷ 16 × 9 = 45) */
+  max-width: 1200px; /* 最大宽度，避免过大 */
+  border-radius: 12px; /* 可选：圆角 */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3); /* 可选：阴影 */
+}
+
+
+
+
+/*****news*****/
+
+
+
+
+
+/* ============ Design Tokens ============ */
+:root{
+  /* 颜色 */
+  --bg:#0b0c0c;
+  --card:#121414;
+  --line:#2a2e30;
+  --fg:#e9ecf2;
+  --muted:#9aa1a6;
+  --accent:#2e7a77;
+
+  /* 圆角/阴影/动画 */
+  --r:16px;
+  --shadow:0 10px 26px rgba(0,0,0,.35);
+  --ease: cubic-bezier(.2,.7,0,1);
+
+  /* 容器与间距 */
+  --pad-x: 6vw;
+  --wrap: 1200px;
+}
+
+/* ============ 基础 ============ */
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font: 16px/1.7 Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+
+/* ============ Header ============ */
+.site-header{
+  position: sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px;
+  padding: 18px var(--pad-x);
+  background: linear-gradient(180deg, rgba(11,12,12,.85), rgba(11,12,12,.45) 58%, transparent);
+  backdrop-filter: blur(2px) saturate(110%);
+}
+.brand{
+  color:var(--fg); text-decoration:none; display:flex; flex-direction:column; gap:2px;
+}
+.brand-mark{ font-family:'Italiana', serif; font-size:28px; letter-spacing:.06em; }
+.brand-sub { font-size:11px; letter-spacing:.34em; opacity:.85; }
+
+/* ============ 页面标题 & 筛选 ============ */
+.page-head{ padding: 72px var(--pad-x) 24px; }
+.page-title{
+  margin:0 0 18px;
+  font: 700 clamp(28px, 6vw, 68px)/1.06 'Italiana','Bodoni Moda', serif;
+  letter-spacing:.02em;
+}
+
+
+/* ============ 新闻网格 ============ */
+/* 容器 */
+.news-lines{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 6vw 100px;
+  display: grid;
+  gap: 14px;                   /* 每条之间的间距 */
+}
+
+/* 一行新闻：左日期 / 中标题 / 右箭头 */
+.news-row{
+  display: grid;
+  grid-template-columns: 200px 1fr auto;  /* 左列宽度可改 */
+  align-items: center;
+  gap: clamp(14px, 3vw, 28px);
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: #151616;                   /* 深色条 */
+  border: 1px solid #2a2e30;
+  color: #e9ecf2; text-decoration: none;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.news-row:hover{
+  background: #191a1a;
+  border-color: #3a4043;
+  transform: translateY(-1px);
+}
+
+/* 左侧日期块 */
+.datebox{ line-height: 1; }
+.ymd{
+  font-weight: 700;
+  font-size: clamp(18px, 2.6vw, 22px);
+  letter-spacing: .06em;
+}
+.dow{
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: #9aa1a6;
+  opacity: .85;
+}
+
+/* 中间标题（可带分类 chip） */
+.line-title{
+  display: flex; align-items: center; gap: 10px;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.7;
+}
+.line-title .chip{
+  display:inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px; letter-spacing:.08em;
+  border:1px solid currentColor;
+  color:#9fd4c8;               /* 根据类别换色 */
+}
+
+/* 右侧椭圆箭头 */
+.row-arrow{
+  width: 44px; height: 44px;
+  display:grid; place-items:center;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  color:#e9ecf2;
+  opacity:0; transform: translateX(-8px);
+  transition: .2s ease;
+  pointer-events: none;
+}
+.news-row:hover .row-arrow{
+  opacity:1; transform:none;
+  border-color: rgba(46,122,119,.6);
+  color:#cfe9e7;
+}
+
+/* 小屏改紧凑：箭头隐藏，左列变窄或折行 */
+@media (max-width: 720px){
+  .news-row{
+    grid-template-columns: 120px 1fr;
+    padding: 16px;
+  }
+  .row-arrow{ display:none; }
+}
+
+/* ============ 分页 ============ */
+.pager{
+  display:flex; gap:10px; justify-content:center; align-items:center;
+  margin: 36px auto 0; max-width: var(--wrap);
+}
+.page-btn{
+  min-width:40px; text-align:center; padding:8px 12px;
+  border:1px solid var(--line); border-radius:10px;
+  color:var(--fg); text-decoration:none; letter-spacing:.12em; font-size:12px;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.page-btn:hover{ background:#141717; }
+.page-btn.is-current{ border-color: var(--accent); color: var(--accent); }
+.page-btn.disabled{ opacity:.45; pointer-events:none; }
+
+/* ============ Footer（全站统一设计） ============ */
+.site-footer{
+  border-top: 1px solid rgba(255,255,255,.18);
+  padding: clamp(56px, 10vh, 96px) var(--pad-x) clamp(40px, 8vh, 80px);
+  background:#050607; /* 纯色背景，去掉渐变 */
+}
+
+.footer-inner{
+  max-width: var(--wrap);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 72px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.footer-brand{
+  max-width: 280px;
+}
+.footer-brand .brand-sub{
+  letter-spacing: .32em;
+  font-size: 13px;
+  opacity: .88;
+  margin-bottom: 10px;
+}
+.footer-sns .ico{
+  --size:34px; width:var(--size); height:var(--size);
+  display:inline-grid; place-items:center; border-radius:999px; color:#fff; margin-right:8px;
+}
+.footer-sns .ico:hover{ background: rgba(255,255,255,.10); }
+
+.footer-grid{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(120px,1fr));
+  gap:12px 32px;
+}
+.footer-grid a{
+  color:var(--fg);
+  text-decoration:none;
+  letter-spacing:.18em;
+  font-size:14px;
+  text-transform: uppercase;
+  opacity:.78;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.footer-grid a:hover{
+  opacity:1;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 820px){
+  .footer-inner{
+    flex-direction: column;
+    gap: 32px;
+  }
+  .footer-grid{
+    grid-template-columns: repeat(2, minmax(120px,1fr));
+  }
+}
+
+
+
+/*****artist
+***********************************************/
+body {
+  margin: 0;
+  background: #000;
+}
+
+/* 保留你的背景样式 */
+.artistbg {
+position: fixed;       /* 固定在视口，不随滚动移动 */
+top: 50%;              /* 垂直中心点 */
+left: 50%;             /* 水平中心点 */
+transform: translate(-50%, -50%); /* 把中心点对齐到视口中心 */
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: -1;           /* 放在内容后面 */
+background: white;     /* 如果需要白底 */
+}
+
+.artistbg img {
+width: auto;           /* 让图片按比例缩放 */
+height: 100vh;         /* 占满高度，保持居中 */
+object-fit: contain;   /* 保持比例不裁切 */
+}
+
+.handwritten {
+  font-family: 'Dancing Script', cursive;
+  position: fixed;
+  top: 40%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  color: white;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+
+  opacity: 1;            /* 默认显示 */
+  visibility: visible;   /* 默认可见 */
+  transition: opacity .4s ease, visibility .4s ease;
+  z-index: 2;
+}
+.hover-deck {
+  position: fixed;      /* 固定铺满整个屏幕 */
+  inset: 0;             /* top:0; right:0; bottom:0; left:0 */
+  z-index: 0;
+  pointer-events: none; /* 避免遮挡小图的鼠标事件 */
+}
+
+.hover-deck .deck-img {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+opacity: 0;             /* 初始完全透明 */
+filter: blur(8px);      /* 模糊效果 */
+transform: scale(1.05); /* 稍微放大，避免模糊边缘 */
+transition: opacity 0.6s ease, filter 0.6s ease; /* 过渡动画 */
+display: block;         /* 不用display控制，用opacity隐藏 */
+pointer-events: none;
+}
+
+/* 显示状态 */
+.hover-deck .deck-img.show {
+opacity: 0.8;           /* 半透明 */
+filter: blur(20px);      /* 保持模糊 */
+}
+
+/* 小图容器 */
+.stack-inner {
+  position: relative;
+  width: var(--wrap, 1000px);
+  margin: 0 auto;
+  
+}
+
+
+.layer {
+position: sticky;
+top: var(--sticky-top, 20vh);
+left: 50%;
+transform: translateX(-50%);
+}
+
+.layer.float {
+  position: relative;  /* 改成相对定位 */
+width: var(--w, 500px);
+margin-top: var(--at, 0vh); /* 控制上下间距 */
+transform: translateX(var(--x, 0px)); /* 水平偏移 */
+left: 40%;
+translate: -50% 0;
+border: 1px solid rgba(0,0,0,.06);
+box-shadow: 0 10px 24px rgba(0,0,0,.08);
+background: #fff;
+}
+
+.thumb {
+display: block;
+width: 600px;
+height: auto;
+}
+.artist-name {
+  position: fixed;           /* 固定在视口中央 */
+  top: 40%;                  
+  left: 50%;
+  transform: translate(-50%, -50%);  /* 精准居中 */
+  
+  font-size: 5rem;
+  font-family: 'Dancing Script', cursive;
+  color: white;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s ease;
+  z-index: 2; /* 保证在人上层 */
+}
+
+.artist-name.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* 初始隐藏所有名字 */
+.artist-name {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* 显示状态 */
+.artist-name.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.handwritten.hide {
+  opacity: 0;
+  visibility: hidden;
+
+}
+/*****discography分页面
+***********************************************/
+/* 全局设置 */
+
+
+/* 链接样式 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  border-color: var(--ink);
+}
+
+/* 容器 */
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* 主体网格布局 */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* 封面图 */
+.cover {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .15);
+  background: #111;
+}
+
+/* 标题 */
+h1 {
+  font-size: 40px;
+  margin: 0 0 6px 0;
+  line-height: 1.2;
+  letter-spacing: .02em;
+}
+
+/* 元信息 */
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* 视频容器 */
+.video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .16);
+}
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 编号信息 */
+.cat {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* 曲目列表 */
+.tracklist {
+  margin: 10px 0 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.tracklist li {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.tracklist .no {
+  display: inline-block;
+  min-width: 1.2em;
+  text-align: right;
+  color: var(--muted);
+}
+.tracklist .title {
+  font-weight: 600;
+}
+
+/* 注释文字 */
+.notes {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* 页脚 */
+footer {
+  margin-top: 48px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+}
+
+/*****个人介绍页
+***********************************************/
+/* 保留你的背景样式 */
+.gerenjieshao,
+.hinatabg {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* 一屏高度 */
+  overflow: hidden;
+}
+
+.hinatabg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* 铺满并保持比例，裁掉多余部分 */
+  object-position: center; /* 居中裁切 */
+  display: block;
+}
+.music-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: background 0.3s;
+}
+.music-toggle:hover {
+  background: rgba(255,255,255,0.2);
+}
+.music-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+
+/*****商品页
+***********************************************/  
+:root {
+  --bg: #0a0a0a;
+  --card: #111;
+  --line: #242424;
+  --fg: #f2f2f2;
+  --muted: #a9a9a9;
+  --accent: #fff;
+  --pill: #161616;
+  --r: 14px;
+}
+
+/* 容器 */
+.goods-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.goods-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--line);
+  background: rgba(10, 10, 10, .9);
+  backdrop-filter: blur(4px);
+}
+
+.goods-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+.goods-brand {
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.goods-brand small {
+  display: block;
+  font-weight: 600;
+  opacity: .8;
+  letter-spacing: .24em;
+}
+
+.goods-head-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.goods-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #222;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.goods-icon-btn:hover {
+  filter: brightness(1.15);
+}
+
+.goods-icon-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Collection 条 */
+.goods-hero-bar {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+  margin-top: 8px;
+}
+
+.goods-collection-title {
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .18em;
+  font-size: 26px;
+}
+
+.goods-collection-pills {
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
+}
+
+.goods-pill {
+  display: grid;
+  place-items: center;
+  height: 56px;
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  background: transparent;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.goods-pill:hover {
+  background: var(--fg);
+  color: #000;
+}
+
+/* 分区标题 */
+.goods-sec-title {
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: .16em;
+  font-size: 24px;
+  margin: 34px 0;
+}
+
+/* 商品网格 */
+.goods-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 980px) {
+  .goods-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .goods-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 卡片 */
+.goods-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .18s ease, border-color .18s ease;
+}
+
+.goods-card:hover {
+  transform: translateY(-2px);
+  border-color: #333;
+}
+
+/* 图 */
+.goods-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #0f0f0f;
+  display: grid;
+  place-items: center;
+}
+
+.goods-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* SOLD / 侧条 */
+.goods-badge {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  font-size: 12px;
+  letter-spacing: .18em;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #1f1f1f;
+  border: 1px solid #333;
+}
+
+.goods-badge.sold {
+  background: #2a2a2a;
+  color: #bbb;
+}
+
+.goods-side-ribbon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(#0e0e0e, #141414);
+  color: #e8e8e8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  border-right: 1px solid #1e1e1e;
+}
+
+/* 文案 */
+.goods-card-body {
+  padding: 16px 16px 18px;
+}
+
+.goods-producer {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.goods-title {
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.goods-price {
+  margin-top: 10px;
+  font-weight: 700;
+  color: #d8d8d8;
+}
+
+.goods-price small {
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* Footer */
+.goods-site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 50px;
+  padding: 32px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.goods-foot-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* 搜索抽屉 */
+.goods-search-drawer {
+  position: fixed;
+  inset: 0 0 auto 0;
+  top: -100px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  transition: top .2s ease;
+  z-index: 20;
+}
+
+.goods-search-drawer.open {
+  top: 0;
+}
+
+.goods-search-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.goods-search-inner input {
+  flex: 1;
+  border: 1px solid #2a2a2a;
+  background: #0c0c0c;
+  color: var(--fg);
+  padding: 12px 12px;
+  border-radius: 8px;
+}
+
+.goods-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  background: #141414;
+  color: #fff;
+  cursor: pointer;
+}
+
+.goods-btn:hover {
+  filter: brightness(1.1);
+}
+/*****商品页
+***********************************************/  
+.tamagochi {
+  position: relative;
+  width: 100%;
+  height: 100vh;       /* 一屏高，按需要可改 */
+}
+
+.tamagochi .tmgc__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* 铺满并裁切 */
+  object-position: center;
+}
+.tmgc__logo{
+  position: absolute;
+  left: 28%;
+  top: 60%;   /* 越大越往下 */
+  transform: translateX(-70%);
+  width: 45vw;
+  z-index: 2;                     /* 确保在上 */
+  pointer-events: none;           /* 不挡住下面交互（可删） */
+}
+/* 文字区块（默认版，对应旧 .message） */
+.goods-message {
+  /* 如果 hero 里 logo 从底部探出是负值，比如 -8vw，这里用下面这句自动顶出间距 */
+  padding: clamp(56px, 10vw, 120px) 6vw;
+  color: #e9ecf2;
+  margin-top: 6vw;
+}
+
+/* 若需要旧的 .message2 效果，给 section 增加修饰类 .is-overlap */
+.goods-message.is-overlap {
+  margin-top: 13vw;
+}
+
+.goods-msg-wrap {
+  max-width: min(1200px, 90vw);
+  margin: 0 auto;
+}
+
+/* 两列布局：左大标题 / 右正文 */
+.goods-msg-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(24px, 6vw, 80px);
+  align-items: start;
+}
+
+/* 左侧大标题 */
+.goods-msg-lead {
+  font-size: clamp(28px, 6vw, 64px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: .02em;
+  margin: 0;
+}
+
+/* 右侧正文 */
+.goods-msg-body p {
+  margin: 0 0 1.1em;
+  font-size: clamp(14px, 1.2vw, 18px);
+  line-height: 1.9;
+  opacity: .92;
+}
+
+/* 眉标题（如果你有用到） */
+.goods-msg-eyebrow {
+  font-size: 14px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin: 0 0 1.5rem;
+}
+.tamagochi2 {
+  width: 100%;
+  overflow: hidden; /* 隐藏溢出 */
+  z-index: 1;   /* 保持在低层 */
+
+}
+
+.tmgc-scroll {
+  display: flex;
+  gap: 20px;
+  animation: scroll-left 30s linear infinite;
+}
+
+.tmgc2 {
+  margin-top: 60px;   /* 视频组往下挪 */
+  height: 90vh;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); } /* 走一半，正好循环 */
+}
+.tmgcvideo .video-row {
+  margin-top: 100px;   /* 视频组往下挪 */
+  display: flex;              /* 横向排列 */
+  gap: 60px;                  /* 两个视频之间的间距 */
+  justify-content: center;    /* 居中（可改成 space-between 等） */
+  flex-wrap: wrap;            /* 屏幕窄时自动换行 */
+}
+
+.tmgcvideo iframe {
+  flex: 1 1 45%;              /* 两个 iframe 各占大约一半 */
+  max-width: 600px;           /* 限制最大宽度 */
+  aspect-ratio: 16 / 9;       /* 保持 16:9 比例 */
+  height: auto;
+}
+.tmgc-row {
+  margin-top: -100px;  /* 往上挪 40px，数值可调 */
+  display: flex;             /* 横向排列 */
+  gap: 20px;                 /* 图片之间的间距 */
+  justify-content: center;   /* 水平居中（你可以改成 flex-start 靠左） */
+  flex-wrap: nowrap;         /* 不换行，全部在一行 */
+  overflow-x: auto;          /* 如果太宽可以左右滚动 */
+  padding: 20px;
+  z-index: 10;   /* 比横向滚动高，显示在上 */
+}
+
+.tmgc-row img {
+  height: 250px;   /* 统一高度（你可以改大/改小） */
+  width: auto;     /* 保持比例 */
+  flex-shrink: 0;  /* 不被压缩 */
+  z-index: 10;   /* 比横向滚动高，显示在上 */
+}
+
+/* Special 页中间大 Logo 区块 */
+.special-logo-band{
+  background:#000;
+  padding: clamp(40px,12vh,80px) 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.special-logo-mark{
+  width:min(520px, 70vw);
+  height:auto;
+  display:block;
+}

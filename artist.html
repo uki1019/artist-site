@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Artist</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="artist-page">
+  
+    <section class="artist">
+        <!-- 固定背景大图 -->
+        <div class="artistbg">
+          <img src="./images/artistbg.jpg" alt="">
+          <h1 class="handwritten">Artist</h1>
+        </div>
+        <button class="orbit-btn">
+          <!-- 三个圈 -->
+          <svg class="rings" viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="30" ry="12" />
+            <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,-6)" />
+            <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,6)" />
+          </svg>
+        </button>
+        
+        <!-- 椭圆菜单 Overlay -->
+        <div class="oval-menu" id="ovalMenu" aria-hidden="true">
+          <!-- 背景毛玻璃层 + 半透明底色 -->
+          <div class="oval-bg"></div>
+        
+          <!-- 白色描边（用SVG更顺滑） -->
+          <svg class="oval-stroke" viewBox="0 0 1000 560" aria-hidden="true">
+            <ellipse cx="500" cy="280" rx="480" ry="250" fill="none"/>
+          </svg>
+        
+          <!-- 底部大logo装饰（可选） -->
+          <img class="oval-deco" src="images/logo.svg" alt="" />
+        
+          <!-- 菜单内容 -->
+          <nav class="oval-content">
+            <ul>
+              <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+              <li><a href="news.html">NEWS</a></li>
+              <li><a href="artist.html">ARTIST</a></li>
+              <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+              <li><a href="special.html">SPECIAL</a></li>
+              <li><a href="goods.html">GOODS</a></li>
+            </ul>
+          </nav>
+        </div>
+        
+<!-- 背景层 -->
+<div id="hoverDeck" class="hover-deck" aria-hidden="true">
+  <img class="deck-img" src="./images/01.jpg" alt="01">
+  <img class="deck-img" src="./images/02.jpg" alt="02">
+  <img class="deck-img" src="./images/03.jpg" alt="03">
+  <img class="deck-img" src="./images/04.jpg" alt="04">
+  <img class="deck-img" src="./images/05.jpg" alt="05">
+  <img class="deck-img" src="./images/06.jpg" alt="06">
+  <img class="deck-img" src="./images/07.jpg" alt="07">
+</div>
+
+<h1 class="artist-name" data-id="01">HINATA<br>June 11th. 2002
+</h1>
+<h1 class="artist-name" data-id="02">CHISA<br>January 17th.2002</h1>
+<h1 class="artist-name" data-id="03">JURIN<br>June 19th.2002</h1>
+<h1 class="artist-name" data-id="04">HARVEY<br> December 18th.2002</h1>
+<h1 class="artist-name" data-id="05">COCONA<br>December 6th.2005</h1>
+<h1 class="artist-name" data-id="06">JURIA<br>November 28th.2004</h1>
+<h1 class="artist-name" data-id="07">MAYA<br>August 10th.2005</h1>
+
+<!-- 小图层 -->
+<div class="stack-inner">
+    <div class="layer float" data-id="01" style="--at:90vh; --w:220px; --x:-300px; --y:-150px;">
+      <img class="thumb" src="./images/01.jpg" alt="">
+      </a>
+    </div>
+    <div class="layer float" data-id="02"style="--at:40vh; --w:260px; --x:200px; --y:-100px;">
+    <img class="thumb" src="./images/02.jpg" alt="">
+    </a>
+    </div>
+    <div class="layer float"data-id="03" style="--at:45vh; --w:180px; --x:-250px; --y:50px;">
+      <img class="thumb" src="./images/03.jpg" alt="">
+    </div>
+    <div class="layer float" data-id="04"style="--at:55vh; --w:300px; --x:100px; --y:120px;">
+      <img class="thumb" src="./images/04.jpg" alt="">
+    </div>
+    <div class="layer float" data-id="05"style="--at:70vh; --w:200px; --x:-150px; --y:200px;">
+      <img class="thumb" src="./images/05.jpg" alt="">
+    </div>
+    <div class="layer float" data-id="06"style="--at:65vh; --w:250px; --x:250px; --y:250px;">
+      <img class="thumb" src="./images/06.jpg" alt="">
+    </div>
+    <div class="layer float" data-id="07"style="--at:50vh; --w:220px; --x:-230px; --y:250px;">
+      <img class="thumb" src="./images/07.jpg" alt="">
+    </div>
+  </div>
+
+  <script>
+    // ========== 椭圆菜单按钮 ==========
+const btn = document.querySelector('.orbit-btn');
+const menu = document.querySelector('#ovalMenu');
+
+// 点击按钮切换菜单显示
+btn.addEventListener('click', () => {
+  menu.classList.toggle('is-open');
+});
+
+// 点击菜单外部区域关闭
+menu.addEventListener('click', (e) => {
+  if (e.target === menu) {
+    menu.classList.remove('is-open');
+  }
+});
+
+// ========== 小图 hover → 模糊背景切换 ==========
+const thumbs = document.querySelectorAll('.stack-inner .thumb');
+const deckImgs = document.querySelectorAll('.hover-deck .deck-img');
+
+thumbs.forEach((thumb, index) => {
+  thumb.addEventListener('mouseenter', () => {
+    deckImgs.forEach(img => img.classList.remove('show'));
+    deckImgs[index].classList.add('show');
+  });
+
+  thumb.addEventListener('mouseleave', () => {
+    deckImgs[index].classList.remove('show');
+  });
+});
+
+// ========== 小图 hover → 标题 Artist / 人名切换 ==========
+const artistTitle = document.querySelector('.handwritten');
+const names = document.querySelectorAll('.artist-name');
+
+thumbs.forEach((thumb, index) => {
+  const id = thumb.closest('.layer.float').dataset.id; // 取小图对应 id
+  const nameEl = document.querySelector(`.artist-name[data-id="${id}"]`);
+
+  thumb.addEventListener('mouseenter', () => {
+    // 隐藏 Artist
+    artistTitle.classList.add('hide');
+    // 隐藏其他名字
+    names.forEach(n => n.classList.remove('show'));
+    // 显示对应名字
+    if (nameEl) nameEl.classList.add('show');
+  });
+
+  thumb.addEventListener('mouseleave', () => {
+    // 恢复 Artist
+    artistTitle.classList.remove('hide');
+    // 隐藏对应名字
+    if (nameEl) nameEl.classList.remove('show');
+  });
+});
+
+  
+  </script>
+  
+</body>
+</html>

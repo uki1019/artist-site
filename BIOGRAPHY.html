@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Bodoni+Moda:opsz,wght@6..96,400..900&display=swap" rel="stylesheet">
+
+<head>
+  <meta charset="utf-8">
+  <title>xg</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <!--这页的开头大图-->
+  <section class="hero">
+    <video class="hero__bg" autoplay muted loop playsinline>
+      <source src="./video/bg动图.mp4" type="video/mp4">
+    </video>
+    <img class="hero__logo" src="./images/logo.png" alt="logo">
+  </section>
+
+  <!-- 可点击按钮 -->
+  <button class="orbit-btn">
+  <!-- 三个圈 -->
+  <svg class="rings" viewBox="0 0 100 100" fill="none">
+    <ellipse cx="50" cy="50" rx="30" ry="12"/>
+    <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,-6)"/>
+    <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,6)"/>
+  </svg>
+  </button>
+
+  <!-- 椭圆菜单 Overlay -->
+  <div class="oval-menu" id="ovalMenu" aria-hidden="true">
+  <!-- 背景毛玻璃层 + 半透明底色 -->
+  <div class="oval-bg"></div>
+
+  <!-- 白色描边（用SVG更顺滑） -->
+  <svg class="oval-stroke" viewBox="0 0 1000 560" aria-hidden="true">
+    <ellipse cx="500" cy="280" rx="480" ry="250" fill="none"/>
+  </svg>
+
+  <!-- 底部大logo装饰（可选） -->
+  <img class="oval-deco" src="images/logo.svg" alt="" />
+
+  <!-- 菜单内容 -->
+  <nav class="oval-content">
+            <ul>
+              <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+              <li><a href="news.html">NEWS</a></li>
+              <li><a href="artist.html">ARTIST</a></li>
+              <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+              <li><a href="special.html">SPECIAL</a></li>
+              <li><a href="goods.html">GOODS</a></li>
+            </ul>
+  </nav>
+  </div>
+
+
+  <section class="social-strip">
+    <div class="social-inner">
+      <div class="social-group">
+        <span class="social-label">Social Media</span>
+        <ul class="social-icons">
+          <li><a class="ico" href="https://www.youtube.com/channel/UC12HMtO5MYph9dCZZ7yygng" aria-label="YouTube" title="YouTube">
+              <iconify-icon icon="simple-icons:youtube"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://www.instagram.com/xgofficial/" aria-label="Instagram" title="Instagram">
+              <iconify-icon icon="simple-icons:instagram"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://www.tiktok.com/@xg.official" aria-label="TikTok" title="TikTok">
+              <iconify-icon icon="simple-icons:tiktok"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://x.com/XGOfficial_" aria-label="X" title="X">
+              <iconify-icon icon="simple-icons:x"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://www.facebook.com/XGOfficial" aria-label="Facebook" title="Facebook">
+              <iconify-icon icon="simple-icons:facebook"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://weibo.com/u/7745703614" aria-label="Weibo" title="Weibo">
+              <iconify-icon icon="simple-icons:sinaweibo"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="https://www.threads.com/@xgofficial" aria-label="Threads" title="Threads">
+              <iconify-icon icon="simple-icons:threads"></iconify-icon>
+            </a></li>
+        </ul>
+      </div>
+
+      <span class="social-divider" aria-hidden="true"></span>
+
+      <div class="social-group">
+        <span class="social-label">Streaming</span>
+        <ul class="social-icons">
+          <li><a class="ico" href="#" aria-label="Spotify" title="Spotify">
+              <iconify-icon icon="simple-icons:spotify"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="#" aria-label="Apple Music" title="Apple Music">
+              <iconify-icon icon="simple-icons:applemusic"></iconify-icon>
+            </a></li>
+          <li><a class="ico" href="#" aria-label="Amazon Music" title="Amazon Music">
+              <iconify-icon icon="simple-icons:amazonmusic"></iconify-icon>
+            </a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="message">
+    <div class="msg-wrap">
+      <p class="msg-eyebrow">MESSAGE</p>
+
+      <div class="msg-grid">
+        <h2 class="msg-lead">
+          音楽に、まっすぐ。<br>
+          心に、届け。
+        </h2>
+
+        <div class="msg-body">
+          <p>JURIN、CHISA、HINATA、HARVEY、JURIA、MAYA、COCONAからなる7人組HIPHOP / R&Bガールズグループ。グループ名である「XG」は「Xtraordinary Girls」を表し、常識にとらわれない規格外なスタイルの音楽やパフォーマンスを通じて、世界中のさまざまな境遇の人たちをエンパワーしていく。
+
+            2022年3月に1st Single「Tippy Toes」でデビュー。全米ビルボードチャート「Hot Trending Songs Powered by Twitter」で日本人アーティストとして史上初の1位にランクイン、米「Billboard」誌で日本人ガールズグループとしては史上初となる表紙を飾るなどグローバルで数々の快挙を成し遂げている。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bigtype-marquee">
+    <div class="bigtype-track" id="bigtypeTrack">
+      <span class="bt">Xtraordinary</span><span class="bt">Girls</span>
+      <span class="bt">Xtraordinary</span><span class="bt">Girls</span>
+      <span class="bt">Xtraordinary</span><span class="bt">Girls</span>
+    </div>
+  </section>
+
+  <img class="biglogo" src="./images/biglogo.png" alt="logo">
+
+  <section class="message2">
+    <div class="msg-wrap">
+
+      <div class="msg-grid">
+        <h2 class="msg-lead">
+          常識を超えた<br>唯一無二の音楽とパフォーマンス。
+        </h2>
+
+        <div class="msg-body">
+          <p>2024年から、初となるワールドツアー「XG 1st WORLD TOUR “The first HOWL”」を世界約30都市で開催中。2024年11月に2nd Mini Album「AWE」をリリースし、米ビルボード・アルバム・チャート“Billboard 200”に初のランクインを果たす。
+
+            2025年4月に開催される、アメリカ最大級の音楽フェス「Coachella Valley Music and Arts Festival」に日本人アーティストとして唯一の出演を果たす。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="BIOGRAPHYvideo2">
+    <div class="BIOGRAPHYvideo">
+      <video width="1200" height="700" controls autoplay muted loop>
+        <source src="./video/bvideo.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <!-- 左：品牌块 -->
+      <div class="footer-brand">
+        <div class="brand-sub">XG</div>
+        <p><a class="ico" href="https://x.com/XGOfficial_" aria-label="X" title="X">
+            <iconify-icon icon="simple-icons:x"></iconify-icon>
+          </a></p>
+      </div>
+
+      <!-- 右：三列导航 -->
+      <nav class="footer-nav" aria-label="Footer">
+        <ul class="footer-grid">
+          <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+          <li><a href="news.html">NEWS</a></li>
+          <li><a href="artist.html">ARTIST</a></li>
+          <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+          <li><a href="special.html">SPECIAL</a></li>
+          <li><a href="goods.html">GOODS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <img class="lastlogo" src="./images/lastlogo.png" alt="logo">
+
+  <script src="./js/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <title>xg</title>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+      
+        <!-- メインビジュアル -->
+    <!-- 背景：先看见“低饱和+轻微模糊”的图 -->
+    <div class="bg">
+    <img class="bg-img" src="./images/1234.jpg" alt="">
+    <div class="logo-wrap">
+        <img class="logo" src="./images/logo.png" alt="logo">
+        <div class="logo-text">Xtraordinary Girls</div>
+      </div>
+
+        <!-- icon -->
+<!-- 可点击按钮 -->
+<button class="orbit-btn">
+    <!-- 三个圈 -->
+    <svg class="rings" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="30" ry="12"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,-6)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" transform="translate(0,6)"/>
+    </svg>
+  </button>
+  
+<!-- 椭圆菜单 Overlay -->
+<div class="oval-menu" id="ovalMenu" aria-hidden="true">
+    <!-- 背景毛玻璃层 + 半透明底色 -->
+    <div class="oval-bg"></div>
+  
+    <!-- 白色描边（用SVG更顺滑） -->
+    <svg class="oval-stroke" viewBox="0 0 1000 560" aria-hidden="true">
+      <ellipse cx="500" cy="280" rx="480" ry="250" fill="none"/>
+    </svg>
+  
+    <!-- 菜单内容 -->
+    <nav class="oval-content">
+      <ul>
+        <li><a href="BIOGRAPHY.html">BIOGRAPHY</a></li>
+        <li><a href="news.html">NEWS</a></li>
+        <li><a href="artist.html">ARTIST</a></li>
+        <li><a href="DISCOGRAPHY.html">DISCOGRAPHY</a></li>
+        <li><a href="special.html">SPECIAL</a></li>
+        <li><a href="goods.html">GOODS</a></li>
+      </ul>
+    </nav>
+</div>
+  <section class="social-strip">
+    <div class="social-inner">
+      <div class="social-group">
+        <span class="social-label">Social Media</span>
+        <ul class="social-icons">
+          <li><a class="ico" href="#" aria-label="YouTube" title="YouTube">
+            <iconify-icon icon="simple-icons:youtube"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Instagram" title="Instagram">
+            <iconify-icon icon="simple-icons:instagram"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="TikTok" title="TikTok">
+            <iconify-icon icon="simple-icons:tiktok"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="X" title="X">
+            <iconify-icon icon="simple-icons:x"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Facebook" title="Facebook">
+            <iconify-icon icon="simple-icons:facebook"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Weibo" title="Weibo">
+            <iconify-icon icon="simple-icons:sinaweibo"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Threads" title="Threads">
+            <iconify-icon icon="simple-icons:threads"></iconify-icon>
+          </a></li>
+        </ul>
+      </div>
+  
+      <span class="social-divider" aria-hidden="true"></span>
+  
+      <div class="social-group">
+        <span class="social-label">Streaming</span>
+        <ul class="social-icons">
+          <li><a class="ico" href="#" aria-label="Spotify" title="Spotify">
+            <iconify-icon icon="simple-icons:spotify"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Apple Music" title="Apple Music">
+            <iconify-icon icon="simple-icons:applemusic"></iconify-icon>
+          </a></li>
+          <li><a class="ico" href="#" aria-label="Amazon Music" title="Amazon Music">
+            <iconify-icon icon="simple-icons:amazonmusic"></iconify-icon>
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+        <!-- フッター -->
+        <script src="./js/script.js" defer></script>
+    </body>
+</html>
