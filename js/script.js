@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoText = document.querySelector('.logo-text'); // 新增
   if (!bgImg || !logoWrap) return;
 
-  // 安全添加：确保先渲染初始样式，再触发过渡
+  // 安全添加：确保先渲染初始样式,再触发过渡
   const armReveal = () => {
     // 先确保初始状态（防重复刷新的残留）
     bgImg.classList.remove('loaded');
     logoWrap.classList.remove('loaded');
     logoText.classList.remove('loaded');
 
-    // 双 rAF：等两帧再加类，100% 触发过渡
+    // 双 rAF：等两帧再加类,100% 触发过渡
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         bgImg.classList.add('loaded');      // 背景从模糊→清晰
@@ -30,42 +30,44 @@ document.addEventListener('DOMContentLoaded', () => {
     bgImg.addEventListener('error', () => console.error('图片加载失败:', bgImg.src), { once: true });
   }
 
-  // 兜底：某些缓存时机下没触发就再武装一次
+  // 兜底：如果一小段时间内还没触发,就强制执行一次
   setTimeout(() => {
-    if (!bgImg.classList.contains('loaded') && bgImg.naturalWidth > 0) {
+    if (!bgImg.classList.contains('loaded')) {
       armReveal();
     }
-  }, 120);
+  }, 300);
 });
-//-----------icon
-document.querySelector('.orbit-btn').addEventListener('click', () => {
-  console.log('按钮被点击了');
-  // 在这里加菜单开关或其它逻辑
-});
-const btn  = document.querySelector('.orbit-btn');
-const menu = document.getElementById('ovalMenu');
+//-----------icon / 椭圆菜单
+(() => {
+  const btn  = document.querySelector('.orbit-btn');
+  const menu = document.getElementById('ovalMenu');
+  if (!btn || !menu) return;
 
-btn.addEventListener('click', () => {
-  menu.classList.toggle('is-open');
-  menu.setAttribute('aria-hidden', menu.classList.contains('is-open') ? 'false' : 'true');
-});
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('is-open');
+    menu.setAttribute(
+      'aria-hidden',
+      menu.classList.contains('is-open') ? 'false' : 'true'
+    );
+  });
 
-// 点击椭圆外侧区域关闭（可选）
-menu.addEventListener('click', (e) => {
-  const box = menu.querySelector('.oval-bg').getBoundingClientRect();
-  const x = e.clientX, y = e.clientY;
-  if (x < box.left || x > box.right || y < box.top || y > box.bottom){
-    menu.classList.remove('is-open');
-    menu.setAttribute('aria-hidden', 'true');
-  }
-});
+  // 点击椭圆外侧区域关闭（可选）
+  menu.addEventListener('click', (e) => {
+    const box = menu.querySelector('.oval-bg').getBoundingClientRect();
+    const x = e.clientX, y = e.clientY;
+    if (x < box.left || x > box.right || y < box.top || y > box.bottom){
+      menu.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true');
+    }
+  });
+})();
 // 下滑时：logo 微微上浮 + 轻缩放
 (() => {
   const hero = document.querySelector('.hero');
   const logo = document.querySelector('.hero__logo');
   if (!hero || !logo) return;
 
-  // 首帧后再允许过渡，避免刚载入就从“none”过渡到 transform
+  // 首帧后再允许过渡,避免刚载入就从"none"过渡到 transform
   requestAnimationFrame(() => document.body.classList.add('motion-ready'));
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -89,7 +91,7 @@ menu.addEventListener('click', (e) => {
     const ty = -maxShift * p;
     const s  = 1 - (1 - minScale) * p;
 
-    // 关键：只改变量，不改 transform 属性
+    // 关键：只改变量,不改 transform 属性
     logo.style.setProperty('--ty', `${ty}px`);
     logo.style.setProperty('--s',  s);
   }
@@ -100,12 +102,12 @@ menu.addEventListener('click', (e) => {
   addEventListener('resize', () => { measure(); update(); }, { passive: true });
   addEventListener('scroll', onScroll, { passive: true });
 })();
-// 无缝滚动：把内容克隆一份拼接在后面，并按内容宽度自动计算动画时长
+// 无缝滚动：把内容克隆一份拼接在后面,并按内容宽度自动计算动画时长
 (() => {
   const track = document.getElementById('bigtypeTrack');
   if (!track) return;
 
-  // 先记下原始宽度，再克隆一份
+  // 先记下原始宽度,再克隆一份
   const originalHTML = track.innerHTML.trim();
   const temp = document.createElement('div');
   temp.style.display = 'inline-flex';
@@ -117,11 +119,36 @@ menu.addEventListener('click', (e) => {
 
   track.innerHTML = originalHTML + originalHTML; // 拼成两份
 
-  // 速度（像素/秒），数值越小越慢。按你喜好改：
+  // 速度（像素/秒）,数值越小越慢。按你喜好改：
   const speed = 4; // e.g. 30~60 都是慢速区
   const duration = singleWidth / speed;       // 只需跑一份宽度（50%）
   track.style.setProperty('--dur', `${duration}s`);
 })();
-    const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+// -------- 通用 YouTube 预览卡片：点击后在 YouTube 打开新标签 --------
+(() => {
+  const cards = document.querySelectorAll('.yt-card[data-yt-id]');
+  if (!cards.length) return;
+
+  cards.forEach(card => {
+    const id = card.getAttribute('data-yt-id');
+    if (!id) return;
+
+    // 如果没写内部内容,自动补一个带播放按钮和日文文案的层
     if (!card.firstElementChild) {
+      const inner = document.createElement('div');
+      inner.className = 'yt-card__inner';
+      inner.innerHTML = `
+        <div class="yt-card__play"></div>
+        <div class="yt-card__label">YouTubeで見る</div>
+      `;
+      card.appendChild(inner);
+    }
+
+    // 点击在新标签打开对应视频
+    card.addEventListener('click', () => {
       const url = `https://www.youtube.com/watch?v=${id}`;
+      window.open(url, '_blank', 'noopener');
+    });
+  });
+})();
